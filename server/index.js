@@ -3,6 +3,14 @@ const express = require("express");
 const cors = require("cors");
 const {Queue} = require("bullmq");
 const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
+
+// Create uploads dir if not exist.
+const uploadDir = path.join(__dirname,"uploads");
+if(!fs.existsSync(uploadDir)){
+ fs.mkdirSync(uploadDir,{recursive:true})
+}
 
 // Create Queue instance from Queue Class
 const queue = new Queue("pdf-upload-queue",{connection:{host:'localhost',port:6379}});
