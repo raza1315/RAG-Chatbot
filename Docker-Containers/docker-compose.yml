@@ -2,7 +2,7 @@ services:
  qdrant-container:
   image: qdrant/qdrant
   ports:
-   - 6334:6334
+   - 6333:6333
 
  redis-container:
   image: redis
