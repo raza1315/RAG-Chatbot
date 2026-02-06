@@ -1,7 +1,7 @@
 const {Worker} = require("bullmq");
 
 const worker = new Worker(
- 'file-upload-queue',
+ 'pdf-upload-queue', 
  async (job)=>{
   const data = JSON.parse(job.data);
   console.log("Job Data: ",data);
