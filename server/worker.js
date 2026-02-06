@@ -1,4 +1,4 @@
-require("dotenv").config({path:__dirname+"/.env"});
+require("dotenv").config({ path: __dirname + "/.env" });
 const { Worker } = require("bullmq");
 const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
 const { QdrantVectorStore } = require('@langchain/qdrant');
