@@ -28,13 +28,15 @@ app.get("/",(req,res)=>{
  res.status(200).json({message:"This is the Home Route"});
 })
 
-app.post("/produce-sample-job",async(req,res)=>{
+app.post("/upload/file",upload.single('file'),async(req,res)=>{
  //add job to the queue
- const data = {color:"green",model:1234};
+ const file_name = req.file.originalname;
+ const file_path = req.file.path;
+ const data = {filename:file_name,path:file_path};
  const job_name = "upload-file";
  const message = JSON.stringify(data);
  await queue.add(job_name,message);
- res.status(200).json({message:"uploaded successfully"});
+ res.status(200).json({message:"file data uploaded to queue successfully"});
 })
 
 app.listen(PORT,()=>{
