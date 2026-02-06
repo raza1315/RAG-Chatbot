@@ -7,6 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { QdrantVectorStore } = require('@langchain/qdrant');
 
 // Create uploads dir if not exist.
 const uploadDir = path.join(__dirname, "uploads");
