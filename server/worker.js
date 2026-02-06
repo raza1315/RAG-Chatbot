@@ -70,7 +70,7 @@ const worker = new Worker(
             console.log(`Initializing HuggingFace embeddings...`);
             const embeddings = new HuggingFaceInferenceEmbeddings({
                 apiKey: process.env.EMBEDDING_API_KEY,
-                // model: 'model name here if needed, otherwise default will be used'
+                model: 'sentence-transformers/all-MiniLM-L6-v2',
             });
             console.log(`✓ Embeddings initialized`);
 
