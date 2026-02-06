@@ -58,7 +58,7 @@ app.get('/chat', async (req, res) => {
   const userQuery = req.query.message;
 
   const embeddings = new HuggingFaceInferenceEmbeddings({
-    apiKey: process.env.HUGGINGFACE_API_KEY,
+    apiKey: process.env.EMBEDDING_API_KEY,
     model: 'sentence-transformers/all-MiniLM-L6-v2',
   });
   const vectorStore = await QdrantVectorStore.fromExistingCollection(
