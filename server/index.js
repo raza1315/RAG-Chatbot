@@ -8,6 +8,9 @@ const path = require("path");
 const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { QdrantVectorStore } = require('@langchain/qdrant');
+const { ChatBotResponse } = require("./ChatBotResponse");
+const { SystemMessage, HumanMessage } = require("langchain")
+const conversation = [];
 
 // Create uploads dir if not exist.
 const uploadDir = path.join(__dirname, "uploads");
@@ -78,17 +81,30 @@ app.get('/chat', async (req, res) => {
   Context:
   ${JSON.stringify(result)}
   `;
+  const systemMessage = new SystemMessage(SYSTEM_PROMPT);
+  const humanMessage = new HumanMessage(userQuery);
+  conversation[0] = systemMessage;
+  conversation.push(humanMessage);
+  const response = await ChatBotResponse(conversation);
+  if (response.status === "error") {
+    return res.status(500).json({ message: response.message });
+  }
+  return res.status(200).json(
+    {
+      message: response.message,
+      docs: result,
+    }
+  )
 
-  const fullPrompt = `${SYSTEM_PROMPT}\n\nUser Query: ${userQuery}`;
+  // const fullPrompt = `${SYSTEM_PROMPT}\n\nUser Query: ${userQuery}`;
+  // const chatResult = await model.generateContent(fullPrompt);
+  // const response = await chatResult.response;
+  // const messageContent = response.text();
+  // return res.json({
+  //   message: messageContent,
+  //   docs: result,
+  // });
 
-  const chatResult = await model.generateContent(fullPrompt);
-  const response = await chatResult.response;
-  const messageContent = response.text();
-
-  return res.json({
-    message: messageContent,
-    docs: result,
-  });
 });
 
 
