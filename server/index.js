@@ -95,16 +95,6 @@ app.get('/chat', async (req, res) => {
       docs: result,
     }
   )
-
-  // const fullPrompt = `${SYSTEM_PROMPT}\n\nUser Query: ${userQuery}`;
-  // const chatResult = await model.generateContent(fullPrompt);
-  // const response = await chatResult.response;
-  // const messageContent = response.text();
-  // return res.json({
-  //   message: messageContent,
-  //   docs: result,
-  // });
-
 });
 
 
