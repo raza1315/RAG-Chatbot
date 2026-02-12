@@ -1,6 +1,7 @@
 require("dotenv").config({ path: __dirname + "/.env" });
 const { Worker } = require("bullmq");
 const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
+const { OpenAIEmbeddings } = require("@langchain/openai")
 const { QdrantVectorStore } = require('@langchain/qdrant');
 const { Document } = require('@langchain/core/documents')
 const { DocxLoader } = require('@langchain/community/document_loaders/fs/docx');
@@ -68,9 +69,14 @@ const worker = new Worker(
 
             // Initialize embeddings
             console.log(`Initializing HuggingFace embeddings...`);
-            const embeddings = new HuggingFaceInferenceEmbeddings({
-                apiKey: process.env.EMBEDDING_API_KEY,
-                model: 'sentence-transformers/all-MiniLM-L6-v2',
+            // const embeddings = new HuggingFaceInferenceEmbeddings({
+            //     apiKey: process.env.EMBEDDING_API_KEY,
+            //     model: 'sentence-transformers/all-MiniLM-L6-v2',
+            // });
+            const embeddings = new OpenAIEmbeddings({
+                apiKey: process.env.OPENAI_API_KEY, // In Node.js defaults to process.env.OPENAI_API_KEY
+                // batchSize: 512, // Default value if omitted is 512. Max is 2048
+                model: "text-embedding-3-small" // Default is text-embedding-3-small. You can specify any available embedding model here.,
             });
             console.log(`✓ Embeddings initialized`);
 

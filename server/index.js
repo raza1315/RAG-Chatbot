@@ -6,6 +6,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
+const { OpenAIEmbeddings } = require("@langchain/openai")
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { QdrantVectorStore } = require('@langchain/qdrant');
 const { ChatBotResponse } = require("./ChatBotResponse");
@@ -60,9 +61,14 @@ app.post("/upload/file", upload.single('file'), async (req, res) => {
 app.get('/chat', async (req, res) => {
   const userQuery = req.query.message;
 
-  const embeddings = new HuggingFaceInferenceEmbeddings({
-    apiKey: process.env.EMBEDDING_API_KEY,
-    model: 'sentence-transformers/all-MiniLM-L6-v2',
+  // const embeddings = new HuggingFaceInferenceEmbeddings({
+  //   apiKey: process.env.EMBEDDING_API_KEY,
+  //   model: 'sentence-transformers/all-MiniLM-L6-v2',
+  // });
+  const embeddings = new OpenAIEmbeddings({
+    apiKey: process.env.OPENAI_API_KEY, // In Node.js defaults to process.env.OPENAI_API_KEY
+    // batchSize: 512, // Default value if omitted is 512. Max is 2048
+    model: "text-embedding-3-small",
   });
   const vectorStore = await QdrantVectorStore.fromExistingCollection(
     embeddings,
@@ -80,6 +86,8 @@ app.get('/chat', async (req, res) => {
   You are helpfull AI Assistant who answeres the user query based on the available context from the File.
   Context:
   ${JSON.stringify(result)}
+
+  NOTE: Please answer the user query based on the context provided.
   `;
   const systemMessage = new SystemMessage(SYSTEM_PROMPT);
   const humanMessage = new HumanMessage(userQuery);
