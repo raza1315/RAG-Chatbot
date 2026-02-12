@@ -34,12 +34,12 @@ const handOffToHumanTool = tool(
 const tools = [testTool, handOffToHumanTool];
 
 // Create agent with model and tools
-// createAgent({model,tools})
-const agent = createAgent({ model, tools });
+// createAgent({model,tools,systemPrompt})
+const agent = createAgent({ model, tools, systemPrompt: "You are a helpful assistant. Use tools when appropriate." });
 
 // Run the agent with a prompt
 (async () => {
-    const testQuery = new HumanMessage("I want to talk to person");
+    const testQuery = new HumanMessage("hey I want to talk to a person");
     const messages = [testQuery];
     const response = await agent.invoke({ messages });
     console.log(response);
